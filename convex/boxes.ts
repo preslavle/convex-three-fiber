@@ -33,6 +33,7 @@ export const getScores = query(async (ctx) => {
       return {
         userId: userId,
         name: user ? `${user.clerkUser.first_name} ${user.clerkUser.last_name}` : "deleted user",
+        color: user ? user.color : "black",
         score,
       };
     })
@@ -42,7 +43,8 @@ export const getScores = query(async (ctx) => {
       return 0;
     }
     return a.score < b.score ? -1 : 1;
-  })
+  });
+  return results;
 });
 
 

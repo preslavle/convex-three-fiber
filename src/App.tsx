@@ -82,8 +82,8 @@ export default function App() {
           <h2>Score board</h2>
           <ul>
             {scores.map((score) => (
-              <li key={score.userId.toString()}>
-                <span>{score.name}:</span>
+              <li key={score.userId.toString()} style={{ color: score.color }}>
+                <span>{score.name}</span>
                 <span>{score.score}</span>
               </li>
             ))}
