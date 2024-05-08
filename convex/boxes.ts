@@ -27,7 +27,7 @@ export const getScores = query(async (ctx) => {
     const delta = cube.active ? 1 : -1;
     scores.set(cube.user, oldScore + delta);
   }
-  return Promise.all(
+  let results = await Promise.all(
     [...scores.entries()].map(async ([userId, score]) => {
       const user = await userById(ctx, userId);
       return {
@@ -37,6 +37,12 @@ export const getScores = query(async (ctx) => {
       };
     })
   );
+  results.sort((a, b) => {
+    if (a.score == b.score) {
+      return 0;
+    }
+    return a.score < b.score ? -1 : 1;
+  })
 });
 
 
