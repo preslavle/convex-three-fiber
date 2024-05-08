@@ -56,10 +56,10 @@ export default function App() {
       {Badge()}
       <div style={{ width: "100%" }}>
         <div>
-          <p>When not activated, a box has the owner play color and bring them -1 point.</p>
-          <p>When activated, it is always orange and brings them +1 point.</p>
-
-          <p>What is the best strategy to win?</p>
+          <p>You can navigate around and click to activate/deactivate boxes</p>
+          <p>When activated, a box is always orange and brings its creator 1 point.</p>
+          <p>When not activated, a box has its creator's color and bring them -1 point.</p>
+          <p><b>What is the best strategy to win?</b></p>
         </div>
         <div style={{float: "left", width: "70%"}}>
           <Canvas style={{ height: "70vh"}}>
