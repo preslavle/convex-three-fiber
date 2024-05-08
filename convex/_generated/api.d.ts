@@ -16,7 +16,6 @@ import type {
 } from "convex/server";
 import type * as boxes from "../boxes.js";
 import type * as http from "../http.js";
-import type * as rotation from "../rotation.js";
 import type * as rounds from "../rounds.js";
 import type * as users from "../users.js";
 
@@ -31,7 +30,6 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   boxes: typeof boxes;
   http: typeof http;
-  rotation: typeof rotation;
   rounds: typeof rounds;
   users: typeof users;
 }>;

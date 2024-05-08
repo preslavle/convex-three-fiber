@@ -1,4 +1,4 @@
-import { mutation, query } from "./_generated/server";
+import { QueryCtx, mutation, query } from "./_generated/server";
 import { mustGetCurrentUser, userById } from "./users";
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
@@ -19,7 +19,7 @@ export const list = query(async (ctx) => {
   );
 });
 
-export const getScores = query(async (ctx) => {
+export const computeScores = async (ctx: QueryCtx) => {
   const cubes = await ctx.db.query("boxes").collect();
   const scores = new Map<Id<"users">, number>();;
   for (const cube of cubes) {
@@ -45,6 +45,10 @@ export const getScores = query(async (ctx) => {
     return a.score > b.score ? -1 : 1;
   });
   return results;
+}
+
+export const getScores = query(async (ctx) => {
+  return await computeScores(ctx);
 });
 
 

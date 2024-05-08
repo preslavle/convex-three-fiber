@@ -7,9 +7,9 @@ export default defineSchema({
     position: v.array(v.number()),
     user: v.id("users"),
   }),
-  rotation: defineTable({
-    x: v.number(),
-    lastModified: v.number(),
+  winners: defineTable({
+    user: v.id("users"),
+    score: v.number(),
   }),
   rounds: defineTable({
     timeLeft: v.number(),

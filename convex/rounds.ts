@@ -1,6 +1,7 @@
 import { internalMutation, mutation, query } from "./_generated/server";
 import { internal } from "./_generated/api";
 import { v } from "convex/values";
+import { computeScores } from "./boxes";
 
 export const tick = internalMutation({
   args: { duration: v.number() },
@@ -9,6 +10,11 @@ export const tick = internalMutation({
     if (round !== null) {
       round.timeLeft -= 1;
       if (round.timeLeft < 0) {
+        // Record winner.
+        let scores = await computeScores(ctx);
+        if (scores.length > 0) {
+          await ctx.db.insert("winners", { user: scores[0].userId, score: scores[0].score })
+        }
         // Reset round
         await ctx.db.replace(round._id, { timeLeft: duration });
         // Delete all boxes.
@@ -19,7 +25,7 @@ export const tick = internalMutation({
       } else {
         await ctx.db.replace(round._id, round);
       }
-      await ctx.scheduler.runAfter(1000, internal.rounds.tick, { duration: 3600 });
+      await ctx.scheduler.runAfter(1000, internal.rounds.tick, { duration });
     }
   },
 });
