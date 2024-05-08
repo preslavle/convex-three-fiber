@@ -62,7 +62,7 @@ export default function App() {
           <p>What is the best strategy to win?</p>
         </div>
         <div style={{float: "left", width: "70%"}}>
-          <Canvas style={{ height: "80vh"}}>
+          <Canvas style={{ height: "70vh"}}>
             <ambientLight intensity={Math.PI / 2} />
             <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
             <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
