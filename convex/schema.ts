@@ -11,6 +11,9 @@ export default defineSchema({
     x: v.number(),
     lastModified: v.number(),
   }),
+  rounds: defineTable({
+    timeLeft: v.number(),
+  }),
   users: defineTable({
     // this is UserJSON from @clerk/backend
     clerkUser: v.any(),
