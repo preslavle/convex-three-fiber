@@ -42,7 +42,7 @@ export const getScores = query(async (ctx) => {
     if (a.score == b.score) {
       return 0;
     }
-    return a.score < b.score ? -1 : 1;
+    return a.score > b.score ? -1 : 1;
   });
   return results;
 });
