@@ -43,8 +43,14 @@ export default function App() {
   const boxes = useQuery(api.boxes.list) || [];
   const scores = useQuery(api.boxes.getScores) || [];
   const timeLeft = useQuery(api.rounds.getTimeLeft) || 0;
-
+  
   const addBox = useMutation(api.boxes.add);
+  const startRound = useMutation(api.rounds.startRound);
+
+  async function handleStartRound(event: FormEvent) {
+    event.preventDefault();
+    await startRound({ duration: 180 });
+  }
 
   async function handleAddBox(event: FormEvent) {
     event.preventDefault();
@@ -79,6 +85,12 @@ export default function App() {
         <div style={{float: "right", width: "25%"}}>
           <h2>Time Left</h2>
           <h2>{timeLeft}</h2>
+          {
+            timeLeft <= 0 &&
+            <form onSubmit={handleStartRound}>
+              <input type="submit" value="Start round" />
+            </form>
+          }
           <h2>Score board</h2>
           <ul>
             {scores.map((score) => (

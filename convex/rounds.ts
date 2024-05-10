@@ -15,26 +15,31 @@ export const tick = internalMutation({
         if (scores.length > 0) {
           await ctx.db.insert("winners", { user: scores[0].userId, score: scores[0].score })
         }
-        // Reset round
-        await ctx.db.replace(round._id, { timeLeft: duration });
-        // Delete all boxes.
-        let boxes = await ctx.db.query("boxes").collect();
-        for (const box of boxes) {
-          await ctx.db.delete(box._id);
-        }
       } else {
         await ctx.db.replace(round._id, round);
+        await ctx.scheduler.runAfter(1000, internal.rounds.tick, { duration });
       }
-      await ctx.scheduler.runAfter(1000, internal.rounds.tick, { duration });
     }
   },
 });
 
-export const startRound = internalMutation({
+export const startRound = mutation({
   args: { duration: v.number() },
   handler: async (ctx, { duration } : { duration: number }) => {
+    // Don't do anything if round is ongoing. 
+    let round = await ctx.db.query("rounds").first();
+    if (round != null && round.timeLeft > 0) {
+      return;
+    }
+
+    // Delete the previous rounds.
     for (const round of await ctx.db.query("rounds").collect()) {
       await ctx.db.delete(round._id);
+    }
+    // Delete all boxes.
+    let boxes = await ctx.db.query("boxes").collect();
+    for (const box of boxes) {
+      await ctx.db.delete(box._id);
     }
     await ctx.db.insert("rounds", { timeLeft: duration });
     await ctx.scheduler.runAfter(0, internal.rounds.tick, { duration });

@@ -57,6 +57,11 @@ export const add = mutation({
   handler: async (ctx, {}) => {
     const user = await mustGetCurrentUser(ctx);
 
+    let round = await ctx.db.query("rounds").first();
+    if (round == null || round.timeLeft <= 0) {
+      return;
+    }
+
     let boxes = await ctx.db.query("boxes").collect();
 
     for (const dim of [2, 4, 8, 16, 32]) {
@@ -78,6 +83,10 @@ export const add = mutation({
 export const setActive = mutation({
   args: { id: v.id("boxes"), active: v.boolean() },
   handler: async (ctx, { id, active } : { id: Id<"boxes">, active: boolean }) => {
+    let round = await ctx.db.query("rounds").first();
+    if (round == null || round.timeLeft <= 0) {
+      return;
+    }
     await ctx.db.patch(id, { "active": active });
   },
 });
